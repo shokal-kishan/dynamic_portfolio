@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path,os
+import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-+dtmz9xq8*untbh9bxoxmuoj-a5l*n+v*6&1=j^l2-n0+j(0*u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app','.now.sh']
+ALLOWED_HOSTS = ['*','.vercel.app','.now.sh']
 
 
 # Application definition
@@ -74,13 +76,51 @@ WSGI_APPLICATION = 'portfolio.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# DATABASES = {
+#     'default': dj_database_url.config(default=os.environ.get("DATABASE_URL"))
+        
+# }
+# DATABASES = {
+#     'default': {
+#         # dj_database_url.config(default=os.environ.get("DATABASE_URL"))
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     } 
+# }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'portfolio_f1gp',
+#         'USER': 'portfolio_f1gp_user',
+#         'PASSWORD': 'WdKMqNHSvutIs8oDPL9zJX7n8QbXmky1',
+#         'HOST': 'dpg-cl3kqapnovjs73bj6ogg-a',
+#         'PORT': '5432'
+#     }
+# }
 
+# DATABASES = {
+# 	"default": dj_database_url.parse(os.environ.get(config('DATABASE_URL')))
+# }
+
+# Load the environment variables using python-decouple
+# config_path = os.path.abspath('G:\dj_go\portfolio\.env')  # Adjust the path to your .env file
+# config = config(config_path)
+
+# # Use dj-database-url to parse the DATABASE_URL environment variable
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': config('DATABASE_NAME'),
+#         'USER': config('DATABASE_USER'),
+#         'PASSWORD': config('DATABASE_PASSWORD'),
+#         'HOST': config('DATABASE_HOST', default='localhost'),
+#         'PORT': config('DATABASE_PORT', default='5432'),
+#     }
+# }
 
 
 # Password validation
@@ -127,5 +167,5 @@ STATIC_URL='/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATICFILES_DIRS=os.path.join(BASE_DIR,'static')
+STATICFILES_DIRS=[os.path.join(BASE_DIR,'static')]
 STATIC_ROOT=os.path.join(BASE_DIR,"staticfiles_build",'static')
